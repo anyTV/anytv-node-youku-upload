@@ -8,9 +8,9 @@ import YoukuUploader from './YoukuUploader'
 export default class YoukuAuth {
 
 	constructor (config) {
-		this.ACCESS_TOKEN_URL = "https://openapi.youku.com/v2/oauth2/token";
-        this.AUTHORIZATION_URL = "https://openapi.youku.com/v2/oauth2/authorize";
-        this.USER_INFO_URL = "https://openapi.youku.com/v2/users/myinfo.json";
+		this.ACCESS_TOKEN_URL = 'https://openapi.youku.com/v2/oauth2/token';
+        this.AUTHORIZATION_URL = 'https://openapi.youku.com/v2/oauth2/authorize';
+        this.USER_INFO_URL = 'https://openapi.youku.com/v2/users/myinfo.json';
 
         this.base_config = config;
         this.client_id = config.client_id

@@ -10,12 +10,12 @@ import md5file from 'md5-file';
 export default class YoukuUploader {
 
     constructor (config, _metadata, _access_token) {
-        this.UPLOAD_TOKEN_URL = "https://openapi.youku.com/v2/uploads/create.json";
-        this.UPLOAD_COMMIT_URL = "https://openapi.youku.com/v2/uploads/commit.json";
-        this.VERSION_UPDATE_URL = "http://open.youku.com/sdk/version_update";
+        this.UPLOAD_TOKEN_URL = 'https://openapi.youku.com/v2/uploads/create.json';
+        this.UPLOAD_COMMIT_URL = 'https://openapi.youku.com/v2/uploads/commit.json';
+        this.VERSION_UPDATE_URL = 'http://open.youku.com/sdk/version_update';
 
         this.metadata = _metadata;
-        this.client_id = config.client_id
+        this.client_id = config.client_id 
         this.access_token = _access_token;
         this.filepath = this.metadata.filepath;
         this.client_secret = config.client_secret;

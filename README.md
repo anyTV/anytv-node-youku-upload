@@ -1,4 +1,6 @@
-# anytv-node-youku-upload
+# anytv-node-youku-uploader
+
+A simple nodejs library for youku authentication and upload.
 
 # Install
 

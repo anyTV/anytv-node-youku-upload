@@ -24,7 +24,7 @@ const config = {
         client_secret: 'YOUR CLIENT SECRET',
         redirect_uri: 'YOUR REDIRECT URI',
         slice_size: 4096 //optional
-    }
+    };
 
 //get auth class
 const auth = Youku.auth;
@@ -49,7 +49,7 @@ auth.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
         //this is the callback after uploading
     }, (progress) => {
         //this is optional, do something with the progress/status
-    })
+    });
 });
 
 ```

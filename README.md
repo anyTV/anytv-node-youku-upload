@@ -50,6 +50,11 @@ auth.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
     }, (progress) => {
         //this is optional, do something with the progress/status
     });
+    
+    //optional: get user info
+    auth.get_user_info((err, result) => {
+        //do whatever u want with the result
+    })
 });
 
 ```

@@ -1,0 +1,11 @@
+install:
+  - "npm install"
+  - "export TRAVIS=1"
+services:
+  - mongodb
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.addUser("travis", "test");'
+language: node_js
+node_js:
+  - "5.0.0"

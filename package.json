@@ -1,0 +1,42 @@
+{
+  "name": "anytv-node-youku-uploader",
+  "version": "0.0.9",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anyTV/anytv-node-youku-uploader.git"
+  },
+  "keywords": [
+    "anytv",
+    "node"
+  ],
+  "author": "anyTV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anyTV/anytv-node-youku-uploader/issues"
+  },
+  "homepage": "https://github.com/anyTV/anytv-node-youku-uploader",
+  "dependencies": {
+    "cuddle": "0.0.50",
+    "kerberos": "^0.0",
+    "md5-file": "^2.0.4",
+    "request": "^2.67.0"
+  },
+  "devDependencies": {
+    "babel": "^6.1.18",
+    "babel-preset-es2015": "^6.1.18",
+    "istanbul": "^0.4.0",
+    "chai": "^3.4.1",
+    "coveralls": "^2.11.4",
+    "esdoc": "^0.4.3",
+    "mocha": "^2.3.3",
+    "mocha-lcov-reporter": "^1.0.0"
+  },
+  "scripts": {
+    "test": "make test",
+    "coverage": "export NODE_ENV=test && istanbul cover _mocha -- --recursive -R spec -t 5000 -s 100",
+    "test-dev": "export NODE_ENV=test && mocha --watch --recursive -R spec -t 5000 -s 100",
+    "docs": "esdoc -c ./esdoc.json"
+  }
+}

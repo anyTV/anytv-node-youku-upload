@@ -1,7 +1,8 @@
 'use strict';
 
-import cudl from 'cuddle';
 import YoukuUploader from './YoukuUploader'
+import cudl from 'cuddle';
+
 /**
  * A simple class that stores connections and returns connection on open
  */
@@ -21,31 +22,26 @@ export default class YoukuAuth {
     }
 
     get_auth_url () {
-        let params = {
-                response_type:  'code',
-                client_id:      this.client_id,
-                redirect_uri:   this.redirect_uri
-            };
+        const params = {
+            response_type:  'code',
+            client_id:      this.client_id,
+            redirect_uri:   this.redirect_uri
+        };
 
         return this.AUTHORIZATION_URL + '?' + cudl.stringify(params);
     }
 
     get_access_token (type, payload, callback) {
-        let params = {
-                client_id:      this.client_id,
-                client_secret:  this.client_secret,
-                redirect_uri:   this.redirect_uri,
-                grant_type:     type
-            };
+        const params = {
+            client_id:      this.client_id,
+            client_secret:  this.client_secret,
+            redirect_uri:   this.redirect_uri,
+            grant_type:     type
+        };
 
-        switch (type) {
-            case 'authorization_code':
-                params.code = payload;
-                break;
-            default:
-                params[type] = payload;
-                break;
-        }
+        params[type === 'authorization_code'
+            ? 'code'
+            : type] = payload;
 
         cudl.post
             .to(this.ACCESS_TOKEN_URL)
@@ -62,7 +58,7 @@ export default class YoukuAuth {
         callback(err, result);
     }
 
-    get_user_info(callback) {
+    get_user_info (callback) {
         cudl.post
             .to(this.USER_INFO_URL)
             .send({
@@ -72,10 +68,8 @@ export default class YoukuAuth {
             .then(callback);
     }
 
-    upload (metadata, filepath, callback, check_progress) {
-        metadata.filepath = filepath;
-
-    	let uploader = new YoukuUploader(this.base_config, metadata, this.access_token);
+    upload (metadata, callback, check_progress) {
+    	const uploader = new YoukuUploader(this.base_config, metadata, this.access_token);
 
         uploader.on_video_id((result) => {
         	this.uploads[result.video_id] = uploader;
@@ -85,6 +79,6 @@ export default class YoukuAuth {
         	uploader.on_progress(check_progress);
         }
 
-        uploader.upload(metadata, filepath, callback);
+        uploader.upload(callback);
     }
 }

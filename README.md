@@ -22,11 +22,11 @@ On your index.js / server.js / app.js, register your database using a key.
 import Youku from 'anytv-node-youku-uploader';
 
 const config = {
-        client_id: 'YOUR CLIENT ID',
-        client_secret: 'YOUR CLIENT SECRET',
-        redirect_uri: 'YOUR REDIRECT URI',
-        slice_size: 4096 //optional
-    };
+    client_id: 'YOUR CLIENT ID',
+    client_secret: 'YOUR CLIENT SECRET',
+    redirect_uri: 'YOUR REDIRECT URI',
+    slice_size: 4096 //optional
+};
 
 //get auth class
 const auth = Youku.auth;
@@ -41,13 +41,14 @@ const authurl = youku.get_auth_url();
 youku.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
     //4. upload!
     const metadata = {
-            title: 'sample123',
-            description: 'sample description123',
-            tags: 'sample anytv youku 123',
-            file_name: 'sample.avi'
-        };
+        title: 'sample123',
+        description: 'sample description123',
+        tags: 'sample anytv youku 123',
+        file_name: 'sample.avi',
+        filepath: 'FILE PATH'
+    };
         
-    youku.upload(metadata, 'FILE PATH', (err, result) => {
+    youku.upload(metadata, (err, result) => {
         //this is the callback after uploading
     }, (progress) => {
         //this is optional, do something with the progress/status

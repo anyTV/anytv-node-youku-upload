@@ -17,3 +17,7 @@ node_modules
 
 trash
 sblm.sublime-workspace
+
+sample.avi
+lib/test.js
+src/test.js

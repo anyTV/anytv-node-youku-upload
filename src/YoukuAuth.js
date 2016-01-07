@@ -10,6 +10,7 @@ export default class YoukuAuth {
 	constructor (config) {
 		this.ACCESS_TOKEN_URL = "https://openapi.youku.com/v2/oauth2/token";
         this.AUTHORIZATION_URL = "https://openapi.youku.com/v2/oauth2/authorize";
+        this.USER_INFO_URL = "https://openapi.youku.com/v2/users/myinfo.json";
 
         this.base_config = config;
         this.client_id = config.client_id
@@ -59,6 +60,16 @@ export default class YoukuAuth {
         }
 
         callback(err, result);
+    }
+
+    get_user_info(callback) {
+        cudl.post
+            .to(this.USER_INFO_URL)
+            .send({
+                client_id: this.client_id,
+                access_token: this.access_token,
+            })
+            .then(callback);
     }
 
     upload (metadata, filepath, callback, check_progress) {

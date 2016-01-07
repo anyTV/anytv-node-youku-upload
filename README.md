@@ -3,7 +3,7 @@
 # Install
 
 ```sh
-npm install anytv-node-youku-upload --save
+npm install anytv-node-youku-uploader --save
 ```
 
 # Features
@@ -17,7 +17,7 @@ npm install anytv-node-youku-upload --save
 ### Opening a connection
 On your index.js / server.js / app.js, register your database using a key.
 ```javascript
-import Youku from 'anytv-node-youku-upload';
+import Youku from 'anytv-node-youku-uploader';
 
 const config = {
         client_id: 'YOUR CLIENT ID',
@@ -33,10 +33,10 @@ const youku = new auth(config);
 
 //authorize a user
 //1. get auth url
-const authurl = auth.get_auth_url();
+const authurl = youku.get_auth_url();
 //2. redirect user to auth url
 //3. get access token, accepts `authorization_code` and `refresh_token` as grant type
-auth.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
+youku.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
     //4. upload!
     const metadata = {
             title: 'sample123',
@@ -45,14 +45,14 @@ auth.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {
             file_name: 'sample.avi'
         };
         
-    auth.upload(metadata, 'FILE PATH', (err, result) => {
+    youku.upload(metadata, 'FILE PATH', (err, result) => {
         //this is the callback after uploading
     }, (progress) => {
         //this is optional, do something with the progress/status
     });
     
     //optional: get user info
-    auth.get_user_info((err, result) => {
+    youku.get_user_info((err, result) => {
         //do whatever u want with the result
     })
 });

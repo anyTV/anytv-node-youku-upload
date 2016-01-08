@@ -35,7 +35,7 @@ const youku = new auth(config);
 
 //authorize a user
 //1. get auth url
-const authurl = youku.get_auth_url();
+const authurl = youku.get_auth_url(state);
 //2. redirect user to auth url
 //3. get access token, accepts `authorization_code` and `refresh_token` as grant type
 youku.get_access_token('GRANT TYPE', 'IDENTIFIER', (err, result) => {

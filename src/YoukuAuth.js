@@ -21,12 +21,16 @@ export default class YoukuAuth {
         this.uploads = {};
     }
 
-    get_auth_url () {
+    get_auth_url (state) {
         const params = {
             response_type:  'code',
             client_id:      this.client_id,
             redirect_uri:   this.redirect_uri
         };
+
+        if (state) {
+            params.state = state;
+        }
 
         return this.AUTHORIZATION_URL + '?' + cudl.stringify(params);
     }

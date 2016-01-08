@@ -18,6 +18,7 @@ export default class YoukuUploader {
         this.metadata = _metadata;
         this.client_id = config.client_id
         this.access_token = _access_token;
+        this.progress_callback = function() {};
         this.filepath = this.metadata.filepath;
         this.client_secret = config.client_secret;
         this.slice_size = config.slice_size || 10240;
@@ -36,6 +37,8 @@ export default class YoukuUploader {
         this.metadata.client_id    = this.client_id;
         this.metadata.access_token = this.access_token;
 
+        //we call our own callback before calling the callers callback
+        //  because we want to save the token in our class
         cudl.get
             .to(this.UPLOAD_TOKEN_URL)
             .send(this.metadata)
@@ -48,6 +51,9 @@ export default class YoukuUploader {
             return callback(err, result, request);
         }
 
+        //we are saving this on our class because we want to give
+        //  the caller the convenience of just calling functions
+        //  without giving the token all the time
         this.token_info = result;
 
         callback(null, result, request);
@@ -57,6 +63,8 @@ export default class YoukuUploader {
 
 
         if (!this.base_url) {
+            //youku requires us to use the IP Address of the upload server
+            //  instead of its domain so we need to resolve it first
             return dns.resolve4(this.token_info.upload_server_uri, (err, result) => {
                 if (err) {
                     return callback(err);
@@ -65,6 +73,9 @@ export default class YoukuUploader {
                 const params = {upload_token: this.token_info.upload_token};
 
                 //TODO: make it random
+                //  we want to make this random because dns.resolve returns an array
+                //  of ip addresses associated with the domain, we don't want to always
+                //  use the first index
                 this.upload_ip = result[0];
                 this.base_url = `http://${result[0]}/gupload/`;
 
@@ -122,7 +133,6 @@ export default class YoukuUploader {
                 if (err) {
                     console.log('Error uploading slice');
                     console.log(err);
-                    this.stop_checking = true;
                     return callback(err);
                 }
 
@@ -158,7 +168,7 @@ export default class YoukuUploader {
 
                 this.slice_upload_meta = result;
 
-                callback(err, result)
+                callback(err, result, request);
             });
     }
 
@@ -178,6 +188,8 @@ export default class YoukuUploader {
 
         const read_file = (err, fd) => {
             _fd = fd;
+            //we only read based on the length and offset sent to us
+            //  by youku
             fs.read(fd, buffer, 0, upload_meta.length, upload_meta.offset, call_api);
         };
 
@@ -218,6 +230,11 @@ export default class YoukuUploader {
 
             fs.close(_fd);
 
+            //the result of the upload API contains a `slice_task_id`
+            //  they set this to 0 if they already gave you the last
+            //  slice task id that you need. while we are not done
+            //  uploading the slices yet, we should always upload the
+            //  next ones.
             if (body.slice_task_id != 0) {
                 upload_meta.offset = body.offset;
                 upload_meta.length = body.length;
@@ -226,6 +243,8 @@ export default class YoukuUploader {
                 return this.upload_slice(upload_meta, callback);
             }
 
+            //we only call the callback when we already uploaded all
+            //  the slices we need to.
             callback(null, body);
         };
 
@@ -250,8 +269,10 @@ export default class YoukuUploader {
                 if (result.status) {
                     switch (result.status) {
                         case 1:
+                            //case 1 is `done` in their API
                             return callback(null, result);
                         default:
+                            //while not done, we should pass the progress
                             this.progress_callback(result);
                             setTimeout(() => {
                                 this.check(callback);

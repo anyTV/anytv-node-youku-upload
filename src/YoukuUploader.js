@@ -41,7 +41,7 @@ export default class YoukuUploader {
         cudl.get
             .to(this.UPLOAD_TOKEN_URL)
             .send(this.metadata)
-            .end(this.save_upload_token.bind(this, callback));
+            .then(this.save_upload_token.bind(this, callback));
     }
 
     save_upload_token (callback, err, result, request) {
@@ -85,7 +85,7 @@ export default class YoukuUploader {
         cudl.post
             .to(this.base_url + 'create_file')
             .send(params)
-            .end(callback);
+            .then(callback);
     }
 
     upload (callback) {
@@ -153,7 +153,7 @@ export default class YoukuUploader {
         cudl.get
             .to(this.base_url + 'new_slice')
             .send({ upload_token: this.token_info.upload_token })
-            .end((err, result, request) => {
+            .then((err, result, request) => {
                 if (err) {
                     return callback(err);
                 }
@@ -243,7 +243,7 @@ export default class YoukuUploader {
         cudl.get
             .to(this.base_url + 'check')
             .send(params)
-            .end((err, result) => {
+            .then((err, result) => {
                 if (err) {
                     return callback(err);
                 }
@@ -279,7 +279,7 @@ export default class YoukuUploader {
         cudl.get
             .to(this.UPLOAD_COMMIT_URL)
             .send(params)
-            .end(callback);
+            .then(callback);
     }
 
     on_video_id (callback) {

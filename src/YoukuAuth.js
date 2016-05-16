@@ -50,7 +50,7 @@ export default class YoukuAuth {
         cudl.post
             .to(this.ACCESS_TOKEN_URL)
             .send(params)
-            .end(this.save_access_token.bind(this, callback))
+            .then(this.save_access_token.bind(this, callback))
     }
 
     save_access_token (callback, err, result) {
@@ -69,7 +69,7 @@ export default class YoukuAuth {
                 client_id: this.client_id,
                 access_token: this.access_token,
             })
-            .end(callback);
+            .then(callback);
     }
 
     upload (metadata, callback, check_progress) {
